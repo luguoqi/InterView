@@ -157,7 +157,96 @@ docker run -it -v /宿主机绝对目录:/容器内目录:ro 镜像名  创建�
 
 ​		出于可移植和分享的考虑，用-v主机目录:容器目录这种方法不能直接在Dockerfile中实现，由于宿主机目录是依赖于特定宿主机的，并不能够保证在所有宿主机上都存在这样的特定目录
 
-docker build -f dockerfile路径 -t 命名空间/镜像名称 .    根据dockerfile构建镜像
+docker build -f dockerfile路径 -t 命名空间/镜像名称 .    根据dockerfile构建镜像，只支持在容器内添加。
+
+数据卷容器：命名的容器挂载数据卷，其他容器通过挂载这个(父容器)实现数据共享，挂载数据卷的容器，称之为数据卷容器
+
+dockerfile：是docker镜像的构建文件，构建步骤为：编写Dockerfile文件->执行docker build->执行docker run
+
+​		其内的每条指令都会创建一个新的镜像蹭，并对镜像进行提交
+
+FROM：基础镜像，当前新镜像是基于那个镜像的
+
+MAINTAINER：镜像维护者的姓名和邮箱地址
+
+RUN：容器构建时需要运行的命令(可以执行linux命令)
+
+EXPOSE：当前容器对外暴露的出的端口
+
+WORKDIR：指定在创建容器后，终端默认登录进来的工作目录，一个落脚点
+
+ENV：用来在构建镜像的过程中设置环境变量
+
+ADD：将宿主机目录下的文件拷贝进镜像且会自动处理URL和解压tar压缩包
+
+COPY：类似ADD，拷贝文件和目录到镜像中，将从构建上下文目录中<源路径>的文件/目录复制到新的一层的镜像内的<目标路径>位置
+
+VOLUME：容器数据卷，用于数据保存和持久化工作
+
+CMD：指定一个容器启动时要运行的命令，Dockerfile中可以有多个CMD命令，但只有最后一个生效，CMD会被docker run之后的参数替换，例如执行docker run -it -p 7777:8080 tomcat ls -l只会 列出tomcat下的文件，并不会启动tomcat
+
+ENTRYPOINT：指定一个容器启动时要运行的命令，ENTRYPOINT的目的和CMD一样，都是在指定容器启动程序及参数，这个在docker run 之后追加
+
+ONBUILD：当构建一个被继承的Dockerfile时运行命令，父镜像在被子继承后父镜像的onbuild被触发，也就是说等通过Dockerfile构建子镜像时，父镜像的的ONBUILD被触发
+
+Base镜像(scratch)：Docker Hub中99%的镜像都是通过在base镜像中安装和配置需要的软件构建出来的
+
+案例：修改centos启动进入时的落脚点为/usr/local，并支持vim 和ifconfig命令
+
+```shell
+FROM centos
+MAINTAINER xiaoyu<xiaoyu@126.com>
+ENV MYPATH /usr/local
+WORKDIR $MYPATH
+RUN yum install -y vim
+RUN yum install -y net-tools
+
+EXPOSE 80
+
+CMD echo $MYPATH
+CMD echo "success----------------------------ok"
+CMD /bin/bash
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
