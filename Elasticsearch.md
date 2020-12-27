@@ -83,7 +83,7 @@ ElasticSearch启动报错
 
 访问被拒绝，此时需要将刚刚创建的elasticsearch目录下的所有文件夹权限调整为777，chmod -R 777 /opt/elasticsearch
 
-## 2.ElasticSearch相关restapi
+## 2.存储操作
 
 ### 1._cat
 
@@ -175,7 +175,7 @@ POST	/_bulk
 
 相关测试数据 /bank/account/_bulk   [accounts.zip](images\accounts.zip) 
 
-## 3.相关检索
+## 3.检索操作
 
 ### 3.1_search体验
 
@@ -210,33 +210,27 @@ GET /bank/_search
 
 #### 3.2.2match_phrase(短语匹配)
 
-"match_phrase": {"address":"mill lane"}	将匹配的值作为一个整体单词(不分词)进行模糊匹配，查询出所有包含mill lane的文档
+"match_phrase": {"address":"mill lane"}或者"match": {"address.keyword":"mill lane"}	将匹配的值作为一个整体单词(不分词)进行模糊匹配，查询出所有包含mill lane的文档，但是第一种方式类似于like "%mill lane%"的形式，而第二种方式相当于= "mill lane"。
 
 #### 3.2.3multi_match(多字段匹配)
 
 "multi_match": {"query":"mill lane","fields":["state","address"]}	查询state或者address中包含mill/lane/mill lane的文档，并且不区分大小写
 
+#### 3.2.4bool(复合查询)
 
+"bool":{"must":[{"match":{"age":"40" }}],"must_not":[{"match":{"state":"ID"}}],"should":{"match":{"lastname":"Tom"}}}	查询匹配age为40并且state不包含ID的文档，并且不区分大小写,should不影响条件匹配，但是影响最终的评分。注意must_not不影响评分
 
+#### 3.2.5filter(结果过滤)
 
+"bool":{"must":[{"filter":{"range":{"balance":{"gte":20000,"lte":30000}}}}]}	查询balance在20000至30000之间的数据，其功能类似于must，但是filter不影响评分，所以此时所有的分值都是0.0
 
+#### 3.2.6term
 
+和match一样，匹配某个属性的值，全文检索字段用match，其他非text字段匹配用term，也就是说精确值的匹配使用term，例如age、balance
 
+"term": {"age":18}	查询出age为18的文档
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+"term": {"address":"Kings"}	则查询不出数据
 
 
 
