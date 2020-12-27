@@ -208,11 +208,13 @@ CMD echo "success----------------------------ok"
 CMD /bin/bash
 ```
 
+查看docker启动时的参数
 
-
-
-
-
+```shell
+yum install npm -y
+npm i -g rekcod
+docker ps -qa|rekcod
+```
 
 
 
