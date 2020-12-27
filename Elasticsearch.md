@@ -46,7 +46,7 @@ Elasticsearch 使用的是一种名为*倒排索引*的数据结构，这一结�
 
 ES的存储结构可以类比MySQL
 
-<img src="E:\IDEA-workspace\InterView\images\ES.png" alt="ES" style="zoom: 33%;" />
+<img src="images\ES.png" alt="ES" style="zoom: 33%;" />
 
 ![ES3](E:\IDEA-workspace\InterView\images\ES3.jpg)
 
