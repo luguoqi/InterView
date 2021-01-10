@@ -46,7 +46,7 @@ systemctl status docker
 
 首先登陆阿里云按一下步骤复制自己的镜像仓库地址
 
-![image-20201025223316453](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201025223316453.png)
+![image-20201025223316453](https://gitee.com/img/20210110232107.png)
 
 接着新建在/etc/docker 下新建 daemon.json，并复制自己的镜像仓库地址json进去
 
@@ -73,7 +73,7 @@ docker info
 
 执行命令 docker run hello-world 页面如下
 
-![image-20201026213211250](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201026213211250.png)
+![image-20201026213211250](https://gitee.com/img/20210110232111.png)
 
 该命令会先从本机查找是否有该镜像，如果没有则去Docker Hub上去拉取该镜像，如果也未找到则报错，否则下载该镜像到本地，然后以该镜像为模板生产容器实例运行
 

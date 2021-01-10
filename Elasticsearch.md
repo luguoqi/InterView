@@ -4,13 +4,113 @@
 
 ​		Elasticsearch 是一个分布式的开源**搜索**和**分析**引擎，适用于所有类型的数据，包括文本、数字、地理空间、结构化和非结构化数据。Elasticsearch 在 Apache Lucene 的基础上开发而成，由 Elasticsearch N.V.（即现在的 Elastic）于 2010 年首次发布。但是，你没法直接用lucene，必须自己写代码去调用他的接口。Elasticsearch 以其简单的 REST 风格 API、分布式特性、速度和可扩展性而闻名，是 Elastic Stack 的核心组件；Elastic Stack 是适用于数据采集、充实、存储、分析和可视化的一组开源工具。人们通常将 Elastic Stack 称为 ELK Stack（代指 Elasticsearch、Logstash 和 Kibana），目前 Elastic Stack 包括一系列丰富的轻量型数据采集代理，这些代理统称为 Beats，可用来向 Elasticsearch 发送数据。
 
-中文官方文档： https://www.elastic.co/guide/cn/elasticsearch/guide/current/index.html
+### 相关资料：
+
+中文官方文档(非常老)： https://www.elastic.co/guide/cn/elasticsearch/guide/current/index.html
+
+英文文档：https://www.elastic.co/guide/en/elasticsearch/reference/current/getting-started.html
+
+github：https://github.com/elastic/elasticsearch
+
+系统学习ElasticSearch：https://www.zhihu.com/column/TeHero
 
 
 
-## 为什么不能替代MySQL？
+## ElasticSearch、MySQL对比
 
+MySQL：关系型数据库，主要面向OLTP，支持事务，支持二级索引，支持sql，支持主从、Group Replication架构模型（本文全部以Innodb为例，不涉及别的存储引擎）。
 
+ElasticSearch：ES是一款分布式的全文检索框架，底层基于Lucene实现，天然分布式，p2p架构，不支持事务及复杂的关系，采用倒排索引提供全文检索。
+
+MySQL中要提前定义表结构，也就是说表共有多少列（属性）需要提前定义好，并且同时需要定义好每个列所占用的存储空间。数据以行为单位组织在一起的，假如某一行的某一列没有数据，也需要占用存储空间。
+
+ES:比较灵活，索引中的field类型可以提前定义（定义mapping），也可以不定义，如果不定义，会有一个默认类型，不过出于可控性考虑，关键字段最好提前定义好。不同的是，ES存的是倒排索引，
+
+​		https://blog.csdn.net/weixin_41247759/article/details/105783030
+
+​		https://www.cnblogs.com/luxiaoxun/p/5452502.html
+
+## ElasticSearch、Solr、Lucene对比
+
+- Lucene
+
+Lucene是apache下的一个子项目，是一个开放源代码的全文检索引擎工具包，但它不是一个完整的全文检索引擎，而是一个全文检索引擎的架构，提供了完整的查询引擎和索引引擎，部分文本分析引擎。官网地址：https://lucene.apache.org/
+
+- Solr
+
+Solr是一个高性能，采用Java5开发，基于Lucene的全文搜索服务器。同时对其进行了扩展，提供了比Lucene更为丰富的查询语言，同时实现了可配置、可扩展并对查询性能进行了优化，并且提供了一个完善的功能管理界面，是一款非常优秀的全文搜索引擎。官网地址：http://lucene.apache.org/solr/
+
+- Elasticsearch
+
+Elasticsearch跟Solr一样，也是一个基于Lucene的搜索服务器，它提供了一个分布式多用户能力的全文搜索引擎，基于RESTful web接口。官网地址：https://www.elastic.co/products/elasticsearch
+
+### 1、Elasticsearch的优缺点：
+
+- 优点：
+
+1.Elasticsearch是分布式的。不需要其他组件，分发是实时的，被叫做"Push replication"。
+
+2.Elasticsearch 完全支持 Apache Lucene 的接近实时的搜索。
+
+3.处理多租户（multitenancy）不需要特殊配置，而Solr则需要更多的高级设置。
+
+4.Elasticsearch 采用 Gateway 的概念，使得完备份更加简单。
+
+5.各节点组成对等的网络结构，某些节点出现故障时会自动分配其他节点代替其进行工作。
+
+- 缺点：
+
+1.只有一名开发者（当前Elasticsearch GitHub组织已经不只如此，已经有了相当活跃的维护者）
+
+2.还不够自动（不适合当前新的Index Warmup API）
+
+### 2、Solr的优缺点：
+
+- 优点
+
+1.Solr有一个更大、更成熟的用户、开发和贡献者社区。
+
+2.支持添加多种格式的索引，如：HTML、PDF、微软 Office 系列软件格式以及 JSON、XML、CSV 等纯文本格式。
+
+3.Solr比较成熟、稳定。
+
+4.不考虑建索引的同时进行搜索，速度更快。
+
+- 缺点
+
+1.建立索引时，搜索效率下降，实时索引搜索效率不高。
+
+### 3、Lucene的优缺点
+
+说明：Lucene 是一个 JAVA 搜索类库，它本身并不是一个完整的解决方案，需要额外的开发工作。
+
+优点：成熟的解决方案，有很多的成功案例。apache 顶级项目，正在持续快速的进步。庞大而活跃的开发社区，大量的开发人员。它只是一个类库，有足够的定制和优化空间：经过简单定制，就可以满足绝大部分常见的需求；经过优化，可以支持 10亿+ 量级的搜索。
+
+缺点：需要额外的开发工作。所有的扩展，分布式，可靠性等都需要自己实现；非实时，从建索引到可以搜索中间有一个时间延迟，而当前的“近实时”(Lucene Near Real Time search)搜索方案的可扩展性有待进一步完善
+
+### 4、Elasticsearch 与 Solr 的比较：
+
+1.二者安装都很简单；
+
+2.Solr 利用 Zookeeper 进行分布式管理，而 Elasticsearch 自身带有分布式协调管理功能;
+
+3.Solr 支持更多格式的数据，而 Elasticsearch 仅支持json文件格式；
+
+4.Solr 官方提供的功能更多，而 Elasticsearch 本身更注重于核心功能，高级功能多有第三方插件提供；
+
+5.Solr 在传统的搜索应用中表现好于 Elasticsearch，但在处理实时搜索应用时效率明显低于 Elasticsearch。
+
+6.Solr 是传统搜索应用的有力解决方案，但 Elasticsearch 更适用于新兴的实时搜索应用。
+
+​	**当单纯的对已有数据进行搜索时，Solr更快。**
+
+​	**当实时建立索引时, Solr会产生io阻塞，查询性能较差, Elasticsearch具有明显的优势。**
+
+​	**随着数据量的增加，Solr的搜索效率会变得更低，而Elasticsearch却没有明显的变化。**
+
+综上所述，Solr的架构不适合实时搜索的应用。
+
+​		https://zhuanlan.zhihu.com/p/78309627
 
 
 
@@ -56,7 +156,7 @@ Elasticsearch 使用的是一种名为*倒排索引*的数据结构，这一结�
 
 ES的存储结构可以类比MySQL
 
-<img src="images\ES.png" alt="ES" style="zoom: 33%;" />
+<img src="https://gitee.com/img/20210110202933.png" alt="ES" style="zoom: 33%;" />
 
 ![ES3](E:\IDEA-workspace\InterView\images\ES3.jpg)
 
@@ -64,7 +164,19 @@ ES的存储结构可以类比MySQL
 
 
 
-![ES1](E:\IDEA-workspace\InterView\images\ES1.jpg)
+
+
+![ES1](https://gitee.com/img/20210110202937.jpg)
+
+## 使用场景
+
+
+
+https://developer.aliyun.com/article/707000
+
+https://my.oschina.net/90888/blog/1619325
+
+
 
 ## 1.安装
 
@@ -87,7 +199,7 @@ docker run --name kibana -e ELASTICSEARCH_HOSTS=http://192.168.136.135:9200 -p 5
 
 ElasticSearch启动报错
 
-<img src="E:\IDEA-workspace\InterView\images\ES4.jpg" alt="ES4" style="zoom:67%;" />
+<img src="https://gitee.com/img/20210110202946.jpg" alt="ES4" style="zoom:67%;" />
 
 
 
@@ -112,15 +224,15 @@ ElasticSearch启动报错
 
 PUT/POST  customer/external/1							body		{"name":"Tom"}				发送多次则为更新操作
 
-<img src="E:\IDEA-workspace\InterView\images\ES5.jpg" alt="ES5" style="zoom: 67%;" />
+<img src="https://gitee.com/img/20210110202948.jpg" alt="ES5" style="zoom: 67%;" />
 
 使用POST并且不指定id，则ES会自动生成一个随机的唯一id
 
-<img src="E:\IDEA-workspace\InterView\images\ES6.jpg" alt="ES6" style="zoom:67%;" />
+<img src="https://gitee.com/img/20210110202952.jpg" alt="ES6" style="zoom:67%;" />
 
 ### 2.2、查询操作
 
-<img src="E:\IDEA-workspace\InterView\images\ES7.jpg" alt="ES7" style="zoom:67%;" />
+<img src="https://gitee.com/img/20210110202953.jpg" alt="ES7" style="zoom:67%;" />
 
 _seq_no,并发控制的字段，当需要控制并发的时候加上?if_seq_no=3&if_primary_term=1,如果两个修改同时添加这两个参数，理论上只有一个能修改成功。
 
@@ -132,7 +244,7 @@ POST customer/external/1/_update					body        {"doc":{"name":"Tom2"}}		对比
 
 或者 POST/PUT	 customer/external/1		   	body        {"name":"Tom2"}		不对比，每次都更新
 
-<img src="E:\IDEA-workspace\InterView\images\ES9.jpg" alt="ES9" style="zoom:67%;" />
+<img src="https://gitee.com/img/20210110202955.jpg" alt="ES9" style="zoom:67%;" />
 
 ### 2.4、删除文档
 
@@ -142,7 +254,7 @@ POST customer/external/1/_update					body        {"doc":{"name":"Tom2"}}		对比
 
 不能删除类型
 
-<img src="E:\IDEA-workspace\InterView\images\ES8.jpg" alt="ES8" style="zoom: 67%;" />
+<img src="https://gitee.com/img/20210110202957.jpg" alt="ES8" style="zoom: 67%;" />
 
 ### 2.5、批量API
 
@@ -168,7 +280,7 @@ POST customer/external/1/_update					body        {"doc":{"name":"Tom2"}}		对比
 
 {requestbody}
 
-<img src="E:\IDEA-workspace\InterView\images\ES10.jpg" alt="ES10" style="zoom:67%;" />
+<img src="https://gitee.com/img/20210110202959.jpg" alt="ES10" style="zoom:67%;" />
 
 复杂批量
 
@@ -246,7 +358,7 @@ GET /bank/_search
 
 聚合提供了从数据中分组和提取数据的能力，最简单的聚合方法大致等于SQL GROUP BY和SQL聚合函数，相当于把检索出的数据做一些分析，例如我们想查询平均年龄、年龄分布等等。
 
-![image-20210103150438690](E:\IDEA-workspace\InterView\images\image-20210103150438690.png)
+![image-20210103150438690](https://gitee.com/img/20210110203002.png)
 
 #### 3.2.8 mapping (映射)
 
@@ -354,9 +466,15 @@ POST _analyze
 
 ## 4.使用java操作ES
 
+客户端对比
 
+1.JestClient：非官方、更新慢
 
+2.RestTemplate/HttpClient：模拟发送Http请求，但ES很多操作都需要自己封装，比较麻烦
 
+3.Elasticsearch-Rest-Client：官方客户端，封装了ES操作，API层次分明，简单易用，推荐使用。
+
+Elasticsearch-Rest-Client：https://www.elastic.co/guide/en/elasticsearch/client/java-rest/current/java-rest-overview.html	https://artifacts.elastic.co/javadoc/org/elasticsearch/client/elasticsearch-rest-high-level-client/7.10.1/index.html
 
 
 
