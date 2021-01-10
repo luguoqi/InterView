@@ -4,6 +4,16 @@
 
 ​		Elasticsearch 是一个分布式的开源**搜索**和**分析**引擎，适用于所有类型的数据，包括文本、数字、地理空间、结构化和非结构化数据。Elasticsearch 在 Apache Lucene 的基础上开发而成，由 Elasticsearch N.V.（即现在的 Elastic）于 2010 年首次发布。但是，你没法直接用lucene，必须自己写代码去调用他的接口。Elasticsearch 以其简单的 REST 风格 API、分布式特性、速度和可扩展性而闻名，是 Elastic Stack 的核心组件；Elastic Stack 是适用于数据采集、充实、存储、分析和可视化的一组开源工具。人们通常将 Elastic Stack 称为 ELK Stack（代指 Elasticsearch、Logstash 和 Kibana），目前 Elastic Stack 包括一系列丰富的轻量型数据采集代理，这些代理统称为 Beats，可用来向 Elasticsearch 发送数据。
 
+中文官方文档： https://www.elastic.co/guide/cn/elasticsearch/guide/current/index.html
+
+
+
+## 为什么不能替代MySQL？
+
+
+
+
+
 ## Elasticsearch 的用途是什么？
 
 Elasticsearch 在速度和可扩展性方面都表现出色，而且还能够索引多种类型的内容，这意味着其可用于多种用例：
@@ -177,7 +187,7 @@ POST	/_bulk
 
 ## 3.检索操作
 
-### 3.1_search体验
+### 3.1 _search体验
 
 查询所有bank索引下的数据，并按account_number升序排列
 
@@ -212,19 +222,19 @@ GET /bank/_search
 
 "match_phrase": {"address":"mill lane"}或者"match": {"address.keyword":"mill lane"}	将匹配的值作为一个整体单词(不分词)进行模糊匹配，查询出所有包含mill lane的文档，但是第一种方式类似于like "%mill lane%"的形式，而第二种方式相当于= "mill lane"。
 
-#### 3.2.3multi_match(多字段匹配)
+#### 3.2.3 multi_match(多字段匹配)
 
 "multi_match": {"query":"mill lane","fields":["state","address"]}	查询state或者address中包含mill/lane/mill lane的文档，并且不区分大小写
 
-#### 3.2.4bool(复合查询)
+#### 3.2.4 bool(复合查询)
 
 "bool":{"must":[{"match":{"age":"40" }}],"must_not":[{"match":{"state":"ID"}}],"should":{"match":{"lastname":"Tom"}}}	查询匹配age为40并且state不包含ID的文档，并且不区分大小写,should不影响条件匹配，但是影响最终的评分。注意must_not不影响评分
 
-#### 3.2.5filter(结果过滤)
+#### 3.2.5 filter(结果过滤)
 
 "bool":{"must":[{"filter":{"range":{"balance":{"gte":20000,"lte":30000}}}}]}	查询balance在20000至30000之间的数据，其功能类似于must，但是filter不影响评分，所以此时所有的分值都是0.0
 
-#### 3.2.6term
+#### 3.2.6 term
 
 和match一样，匹配某个属性的值，全文检索字段用match，其他非text字段匹配用term，也就是说精确值的匹配使用term，例如age、balance
 
@@ -232,31 +242,117 @@ GET /bank/_search
 
 "term": {"address":"Kings"}	则查询不出数据
 
+#### 3.2.7 aggregations(聚合)
+
+聚合提供了从数据中分组和提取数据的能力，最简单的聚合方法大致等于SQL GROUP BY和SQL聚合函数，相当于把检索出的数据做一些分析，例如我们想查询平均年龄、年龄分布等等。
+
+![image-20210103150438690](E:\IDEA-workspace\InterView\images\image-20210103150438690.png)
+
+#### 3.2.8 mapping (映射)
+
+表示json数据中每个数据的类型，比如 text、long、integer、ip等等。
+
+GET /bank/_mapping  查询每个字段的类型，在7.X中已经移除类型的定义
+
+#### 3.2.9 分词
+
+将一段完整的字符串分成一个个单词/词语，然后对其进行索引，方便后期查询。
+
+```console
+#测试
+POST _analyze
+{
+  "tokenizer": "standard",
+  "text": "The 2 QUICK Brown-Foxes jumped over the lazy dog's bone."
+}
+#结果
+[ The, 2, QUICK, Brown, Foxes, jumped, over, the, lazy, dog's, bone ]
+#但是如果使用“中国大学”
+#显然不是我们想要的结果，这是因为ES默认使用标准分词器(standard)进行分词
+[ 中,国,大,学 ]
+```
+
+安装ik分词器  https://github.com/medcl/elasticsearch-analysis-ik
+
+```shell
+#1、进入es容器中的plugins目录中,因为我们安装es时已经做了数据卷映射，索引也不用进入容器中
+# cd /opt/elasticsearch/plugins
+docker exec -it elasticsearch /bin/bash
+cd plugins
+# 下载ik分词器
+wget https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v7.4.2/elasticsearch-analysis-ik-7.4.2.zip
+#新建文件夹
+mkdir ik
+#解压
+unzip -d ik elasticsearch-analysis-ik-7.4.2.zip
+#这时候可以进入容器的中ES的bin目录执行,可以看到ik插件已经安装完成
+elasticsearch-plugins list
+#重启ES
+docker restart elasticsearch
+```
+
+```json
+#测试1
+POST _analyze
+{
+  "tokenizer": "ik_smart",
+  "text": "我是中国人"
+}
+#结果
+[我,是,中国人]
+#测试2
+POST _analyze
+{
+  "tokenizer": "ik_smart",
+  "text": "我是中国人"
+}
+#结果，最大的单词组合
+[我,是,中国人,中国,国人]
+```
+
+指定分词
+
+```shell
+#安装nginx，先随便安装一个nginx，目的是复制nginx的配置文件
+docker run -p 80:80 --name nginx -d nginx:1.10
+#将容器中的文件复制到宿主机目录中
+docker cp nginx:/etc/nginx ./nginx
+#最终的目录结构/opt/nginx/conf
+docker run -p 80:80 --name nginx -v /opt/nginx/html:/usr/share/nginx/html -v /opt/nginx/logs:/var/log/nginx -v /opt/nginx/conf:/etc/nginx -d nginx:1.10
+#在nginx的html下新建fenci.txt文件，内容为：我是
+#修改ik分词器的配置文件
+vim /opt/elasticsearch/plugins/ik/config/IKAnalyzer.cfg.xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+        <comment>IK Analyzer 扩展配置</comment>
+        <!--用户可以在这里配置自己的扩展字典 -->
+        <entry key="ext_dict"></entry>
+         <!--用户可以在这里配置自己的扩展停止词字典-->
+        <entry key="ext_stopwords"></entry>
+        <!--用户可以在这里配置远程扩展字典 -->
+        <entry key="remote_ext_dict">http://192.168.136.135/es/fenci.txt</entry>
+        <!--用户可以在这里配置远程扩展停止词字典-->
+        <entry key="remote_ext_stopwords">words_location</entry>
+</properties>
+#重启es
+docker restart elasticsearch
+
+#然后再次测试我是中国人
+POST _analyze
+{
+  "tokenizer": "ik_max_word",
+  "text": "我是中国人"
+}
+#结果，最大的单词组合，此时我是就作为一个词组来进行分词
+[我是,中国人,中国,国人]
+
+```
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+## 4.使用java操作ES
 
 
 
