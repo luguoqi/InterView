@@ -135,6 +135,8 @@ docker ps 列出所有正在运行的容器，-q 列出正在运行的容器；-
 
 docker run -d 镜像名称 以后台进程的形式运行容器，但通过docker ps命令却查看不到正在运行的容器，说明，docker容器后台运行，就必须有一个前台进程，如果docker运行的命令不是那些一直挂起的命令，就是会自动推出的。解决方案是将你要运行的程序以前台进程的形式运行即可
 
+docker update [参数] 修改容器启动参数
+
 docker logs -f -t --tail 容器id 查看容器日志，-t加入时间戳；-f跟随最新的日志打印；--tail显示最后多少条
 
 docker run -d centos /bin/sh -c "while true;do echo hello lugq;sleep 2;donedocker "
