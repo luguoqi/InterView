@@ -4,6 +4,26 @@
 
 ​		Elasticsearch 是一个分布式的开源**搜索**和**分析**引擎，适用于所有类型的数据，包括文本、数字、地理空间、结构化和非结构化数据。Elasticsearch 在 Apache Lucene 的基础上开发而成，由 Elasticsearch N.V.（即现在的 Elastic）于 2010 年首次发布。但是，你没法直接用lucene，必须自己写代码去调用他的接口。Elasticsearch 以其简单的 REST 风格 API、分布式特性、速度和可扩展性而闻名，是 Elastic Stack 的核心组件；Elastic Stack 是适用于数据采集、充实、存储、分析和可视化的一组开源工具。人们通常将 Elastic Stack 称为 ELK Stack（代指 Elasticsearch、Logstash 和 Kibana），目前 Elastic Stack 包括一系列丰富的轻量型数据采集代理，这些代理统称为 Beats，可用来向 Elasticsearch 发送数据。
 
+**Elastic Stack成员详解**
+
+**ElasticSearch：**
+
+ElasticSearch基于Java，是一个开源分布式搜索引擎，它的特点有：分布式、零配置、自动发现、索引自动分片、索引副本机制、restful风格接口、多数据源、自动搜索负载等。
+
+**Logstash：**
+
+Logstash基于Java，是一个开源的用于收集分析和存储日志的工具
+
+**Kibana：**
+
+Kibana基于nodejs，也是一个开源免费的工具，Kibana可以为Logstash和ElasticSearch提供有好的Web界面，可以汇总、分析和搜索重要的数据日志。
+
+**Beats：**
+
+Beats是elastic公司开源的一款采集系统监控数据的代理agent，是在被监控服务器上以客户端的形式运行的数据收集器的统称，可以直接把数据发送给ElasticSearch或者通过Logstash发送给ElasticSearch，然后进行后续的数据分析活动。
+
+![image-20210111213900808](https://gitee.com/img/20210111213900.png)
+
 ### 相关资料：
 
 中文官方文档(非常老)： https://www.elastic.co/guide/cn/elasticsearch/guide/current/index.html
@@ -13,6 +33,8 @@
 github：https://github.com/elastic/elasticsearch
 
 系统学习ElasticSearch：https://www.zhihu.com/column/TeHero
+
+入门ElasticSearch：https://blog.csdn.net/qq_21046965/category_8659190.html
 
 
 
@@ -170,13 +192,29 @@ ES的存储结构可以类比MySQL
 
 ## 使用场景
 
+（1）维基百科，类似百度百科，全文检索，高亮，搜索推荐
 
+（2）The Guardian（国外新闻网站），用户行为日志（点击，浏览，收藏，评论）+社交网络数据，数据分析
 
-https://developer.aliyun.com/article/707000
+（3）Stack Overflow（国外的程序异常讨论论坛）
 
-https://my.oschina.net/90888/blog/1619325
+（4）GitHub（开源代码管理）
 
+（5）电商网站，检索商品
 
+（6）日志数据分析，logstash采集日志，ES进行复杂的数据分析（ELK技术，elasticsearch+logstash+kibana）
+
+（7）商品价格监控网站
+
+（8）BI系统，商业智能，Business Intelligence。
+
+（9）站内搜索（电商，招聘，门户，等等），IT系统搜索（OA，CRM，ERP，等等），数据分析（ES热门的一个使用场景）
+
+使用场景1：https://developer.aliyun.com/article/707000
+
+使用场景2：https://my.oschina.net/90888/blog/1619325
+
+ES实现百亿级数据实时分析：https://www.jianshu.com/p/ddfff7e45822
 
 ## 1.安装
 
@@ -191,28 +229,41 @@ mkdir -p /opt/elasticsearch/plugins
 #配置远程访问
 echo "http.host: 0.0.0.0" >> /opt/elasticsearch/config/elasticsearch.yml
 #启动elasticsearch,其中9200是ES提供restful接口的端口，9300是ES在分布式集群状态下节点间通信端口,注意如果这里不指定虚拟机内存，ES则会直接占用全部内存。启动完成后可以访问9200，返回json则启动成功
-docker run --name elasticsearch -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -e ES_JAVA_OPTS="-Xms64m -Xmx128m" -v /opt/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/elasticsearch.yml -v /opt/elasticsearch/data:/usr/share/elasticsearch/data -v /opt/elasticsearch/plugins:/usr/share/elasticsearch/plugins -d elasticsearch:7.4.2
+docker run --name elasticsearch -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -e ES_JAVA_OPTS="-Xms1024m -Xmx1024m" -v /opt/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/elasticsearch.yml -v /opt/elasticsearch/data:/usr/share/elasticsearch/data -v /opt/elasticsearch/plugins:/usr/share/elasticsearch/plugins -d elasticsearch:7.4.2
+#注意如果此时启动失败报错访问被拒绝则可能是刚刚新建的配置文件没有权限导致的，这是需要修改配置文件权限
+chmod -R 777 /opt/elasticsearch
 # 启动Kibana可视化界面，启动完成可以访问5601，可以看到可视化界面
 docker run --name kibana -e ELASTICSEARCH_HOSTS=http://192.168.136.135:9200 -p 5601:5601 -d kibana:7.4.2
 
 ```
 
-ElasticSearch启动报错
-
-<img src="https://gitee.com/img/20210110202946.jpg" alt="ES4" style="zoom:67%;" />
-
-
-
-访问被拒绝，此时需要将刚刚创建的elasticsearch目录下的所有文件夹权限调整为777，chmod -R 777 /opt/elasticsearch
-
 ## 2.存储操作
 
-### 1._cat
+### 1._cat([官网](https://www.elastic.co/guide/en/elasticsearch/reference/current/cat.html))
 
-- GET /_cat/nodes 查看所有节点
+- GET /_cat/nodes 查看所有节点(集群状态、内存、磁盘使用状态)，添加?v参数查看
+
+  ip         heap.percent ram.percent cpu load_1m load_5m load_15m node.role master name
+  172.17.0.3           21          84   3    0.01    0.39     0.47 dilm      *      41081103b675
+
 - GET /_cat/health 查看ES健康状况
+
+  epoch      timestamp cluster        status node.total node.data shards pri relo init unassign pending_tasks max_task_wait_time active_shards_percent
+  1610375467 14:31:07  docker-cluster yellow          1         1      5   5    0    0        2             0                  -                 71.4%
+
 - GET /_cat/master 查看主节点
+
+  id                     host       ip         node
+  AQNum6sfQs6VqJuIlH-sxQ 172.17.0.3 172.17.0.3 41081103b675
+
 - GET /_cat/indices 查看所有索引，相当于MySQL中 show databases;
+
+  health status index                    uuid                   pri rep docs.count docs.deleted store.size pri.store.size
+  yellow open   bank                     9xDEXQekSDqC_aDlf2t02g   1   1       1000            0    429.1kb        429.1kb
+  green  open   .kibana_task_manager_1   sQ9kajZvRGu9PWYnlROR1A   1   0          2            1     15.6kb         15.6kb
+  green  open   .apm-agent-configuration 8LXJKfdpTp6udnMgbkPl1g   1   0          0            0       283b           283b
+  green  open   .kibana_1                Y1RA0vUyTsWRM113DA57hQ   1   0          8            0     28.6kb         28.6kb
+  yellow open   customer                 f3ZmCwf3Q46UQ4kNiVFRQA   1   1          5            3       16kb           16kb
 
 ### 2.索引一个文档(相当于MySQL保存一条记录)
 
@@ -474,9 +525,15 @@ POST _analyze
 
 3.Elasticsearch-Rest-Client：官方客户端，封装了ES操作，API层次分明，简单易用，推荐使用。
 
-Elasticsearch-Rest-Client：https://www.elastic.co/guide/en/elasticsearch/client/java-rest/current/java-rest-overview.html	https://artifacts.elastic.co/javadoc/org/elasticsearch/client/elasticsearch-rest-high-level-client/7.10.1/index.html
+Elasticsearch-Rest-Client：https://www.elastic.co/guide/en/elasticsearch/client/java-rest/current/java-rest-overview.html
 
-
+```xml
+<dependency>
+    <groupId>org.elasticsearch.client</groupId>
+    <artifactId>elasticsearch-rest-high-level-client</artifactId>
+    <version>7.10.1</version>
+</dependency>
+```
 
 
 
