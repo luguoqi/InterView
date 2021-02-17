@@ -4,6 +4,8 @@
 
 ​		Elasticsearch 是一个分布式的开源**搜索**和**分析**引擎，适用于所有类型的数据，包括文本、数字、地理空间、结构化和非结构化数据。Elasticsearch 在 Apache Lucene 的基础上开发而成，由 Elasticsearch N.V.（即现在的 Elastic）于 2010 年首次发布。但是，你没法直接用lucene，必须自己写代码去调用他的接口。Elasticsearch 以其简单的 REST 风格 API、分布式特性、速度和可扩展性而闻名，是 Elastic Stack 的核心组件；Elastic Stack 是适用于数据采集、充实、存储、分析和可视化的一组开源工具。人们通常将 Elastic Stack 称为 ELK Stack（代指 Elasticsearch、Logstash 和 Kibana），目前 Elastic Stack 包括一系列丰富的轻量型数据采集代理，这些代理统称为 Beats，可用来向 Elasticsearch 发送数据。
 
+<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20210111230021533.png" alt="image-20210111230021533" style="zoom: 67%;" />
+
 **Elastic Stack成员详解**
 
 **ElasticSearch：**
@@ -22,7 +24,7 @@ Kibana基于nodejs，也是一个开源免费的工具，Kibana可以为Logstash
 
 Beats是elastic公司开源的一款采集系统监控数据的代理agent，是在被监控服务器上以客户端的形式运行的数据收集器的统称，可以直接把数据发送给ElasticSearch或者通过Logstash发送给ElasticSearch，然后进行后续的数据分析活动。
 
-![image-20210111213900808](https://gitee.com/img/20210111213900.png)
+
 
 ### 相关资料：
 
@@ -166,6 +168,10 @@ Elasticsearch 使用的是一种名为*倒排索引*的数据结构，这一结�
 
 在索引过程中，Elasticsearch 会存储文档并构建倒排索引，这样用户便可以近实时地对文档数据进行搜索。索引过程是在索引 API 中启动的，通过此 API 您既可向特定索引中添加 JSON 文档，也可更改特定索引中的 JSON 文档。
 
+倒排索引1：https://zhuanlan.zhihu.com/p/33671444?utm_source=wechat_timeline
+
+倒排索引2：https://zhuanlan.zhihu.com/p/137916758
+
 ## 为何使用 Elasticsearch？
 
 **Elasticsearch 很快。** 由于 Elasticsearch 是在 **Lucene** 基础上构建而成的，所以在全文本搜索方面表现十分出色。Elasticsearch 同时还是一个近实时的搜索平台，这意味着从文档索引操作到文档变为可搜索状态之间的延时很短，一般只有一秒。因此，Elasticsearch 非常适用于对时间有严苛要求的用例，例如安全分析和基础设施监测。
@@ -178,17 +184,7 @@ Elasticsearch 使用的是一种名为*倒排索引*的数据结构，这一结�
 
 ES的存储结构可以类比MySQL
 
-<img src="https://gitee.com/img/20210110202933.png" alt="ES" style="zoom: 33%;" />
-
-![ES3](E:\IDEA-workspace\InterView\images\ES3.jpg)
-
-![ES2](E:\IDEA-workspace\InterView\images\ES2.jpg)
-
-
-
-
-
-![ES1](https://gitee.com/img/20210110202937.jpg)
+<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20210111225142361.png" alt="image-20210111225142361" style="zoom: 50%;" />
 
 ## 使用场景
 
@@ -239,7 +235,9 @@ docker run --name kibana -e ELASTICSEARCH_HOSTS=http://192.168.136.135:9200 -p 5
 
 ## 2.存储操作
 
-### 1._cat([官网](https://www.elastic.co/guide/en/elasticsearch/reference/current/cat.html))
+### 1._cat
+
+官网地址：https://www.elastic.co/guide/en/elasticsearch/reference/current/cat.html
 
 - GET /_cat/nodes 查看所有节点(集群状态、内存、磁盘使用状态)，添加?v参数查看
 
@@ -275,7 +273,7 @@ docker run --name kibana -e ELASTICSEARCH_HOSTS=http://192.168.136.135:9200 -p 5
 
 PUT/POST  customer/external/1							body		{"name":"Tom"}				发送多次则为更新操作
 
-<img src="https://gitee.com/img/20210110202948.jpg" alt="ES5" style="zoom: 67%;" />
+<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20210111230115172.png" alt="image-20210111230115172" style="zoom:67%;" />
 
 使用POST并且不指定id，则ES会自动生成一个随机的唯一id
 
@@ -283,7 +281,7 @@ PUT/POST  customer/external/1							body		{"name":"Tom"}				发送多次则为�
 
 ### 2.2、查询操作
 
-<img src="https://gitee.com/img/20210110202953.jpg" alt="ES7" style="zoom:67%;" />
+<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20210111230155189.png" alt="image-20210111230155189" style="zoom:67%;" />
 
 _seq_no,并发控制的字段，当需要控制并发的时候加上?if_seq_no=3&if_primary_term=1,如果两个修改同时添加这两个参数，理论上只有一个能修改成功。
 
@@ -295,7 +293,7 @@ POST customer/external/1/_update					body        {"doc":{"name":"Tom2"}}		对比
 
 或者 POST/PUT	 customer/external/1		   	body        {"name":"Tom2"}		不对比，每次都更新
 
-<img src="https://gitee.com/img/20210110202955.jpg" alt="ES9" style="zoom:67%;" />
+<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20210111230219573.png" alt="image-20210111230219573" style="zoom:67%;" />
 
 ### 2.4、删除文档
 
@@ -305,7 +303,7 @@ POST customer/external/1/_update					body        {"doc":{"name":"Tom2"}}		对比
 
 不能删除类型
 
-<img src="https://gitee.com/img/20210110202957.jpg" alt="ES8" style="zoom: 67%;" />
+<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20210111230251413.png" alt="image-20210111230251413" style="zoom: 67%;" />
 
 ### 2.5、批量API
 
@@ -331,7 +329,7 @@ POST customer/external/1/_update					body        {"doc":{"name":"Tom2"}}		对比
 
 {requestbody}
 
-<img src="https://gitee.com/img/20210110202959.jpg" alt="ES10" style="zoom:67%;" />
+![image-20210111230339276](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20210111230339276.png)
 
 复杂批量
 
@@ -375,6 +373,10 @@ GET /bank/_search
 
 ### 3.2Query DSL相关字段
 
+Query DSL(Domain Specific Language) 领域特定语言
+
+官网地址：https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html#query-dsl
+
 #### 3.2.1match(全文匹配)
 
 "match": {"account_number":20}	如果匹配非字符串字段，则其为精确匹配，否则为模糊匹配
@@ -383,7 +385,7 @@ GET /bank/_search
 
 #### 3.2.2match_phrase(短语匹配)
 
-"match_phrase": {"address":"mill lane"}或者"match": {"address.keyword":"mill lane"}	将匹配的值作为一个整体单词(不分词)进行模糊匹配，查询出所有包含mill lane的文档，但是第一种方式类似于like "%mill lane%"的形式，而第二种方式相当于= "mill lane"。
+"match_phrase": {"addres s":"mill lane"}或者"match": {"address.keyword":"mill lane"}	将匹配的值作为一个整体单词(不分词)进行模糊匹配，查询出所有包含mill lane的文档，但是第一种方式类似于like "%mill lane%"的形式，而第二种方式相当于= "mill lane"。
 
 #### 3.2.3 multi_match(多字段匹配)
 
@@ -409,7 +411,7 @@ GET /bank/_search
 
 聚合提供了从数据中分组和提取数据的能力，最简单的聚合方法大致等于SQL GROUP BY和SQL聚合函数，相当于把检索出的数据做一些分析，例如我们想查询平均年龄、年龄分布等等。
 
-![image-20210103150438690](https://gitee.com/img/20210110203002.png)
+![image-20210111230459819](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20210111230459819.png)
 
 #### 3.2.8 mapping (映射)
 
@@ -449,7 +451,7 @@ mkdir ik
 #解压
 unzip -d ik elasticsearch-analysis-ik-7.4.2.zip
 #这时候可以进入容器的中ES的bin目录执行,可以看到ik插件已经安装完成
-elasticsearch-plugins list
+elasticsearch-plugin list
 #重启ES
 docker restart elasticsearch
 ```
@@ -479,7 +481,7 @@ POST _analyze
 #安装nginx，先随便安装一个nginx，目的是复制nginx的配置文件
 docker run -p 80:80 --name nginx -d nginx:1.10
 #将容器中的文件复制到宿主机目录中
-docker cp nginx:/etc/nginx ./nginx
+docker cp nginx:/etc/nginx ./
 #最终的目录结构/opt/nginx/conf
 docker run -p 80:80 --name nginx -v /opt/nginx/html:/usr/share/nginx/html -v /opt/nginx/logs:/var/log/nginx -v /opt/nginx/conf:/etc/nginx -d nginx:1.10
 #在nginx的html下新建fenci.txt文件，内容为：我是
@@ -516,6 +518,8 @@ POST _analyze
 
 
 ## 4.使用java操作ES
+
+官网地址(https://www.elastic.co/guide/en/elasticsearch/reference/current/rest-apis.html)
 
 客户端对比
 

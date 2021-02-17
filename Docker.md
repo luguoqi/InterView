@@ -2,9 +2,14 @@
 
 ## 简介
 
+Docker的英文翻译是“码头工人”，即搬运工，它搬运的东西就是我们常说的集装箱Container，Container里面装的是任意类型的App。我们的开发人员可以通过Docker将App变成一种标准的、可移植的、自管理的组件，我们可以在任何主流的操作系统中开发、调试和运行。
 
+从概念上来看，Docker和传统的虚拟机比较类似，只是更轻量级，更方便使用。Docker和虚拟机最主要的区别有以下几点：
 
-
+- 虚拟化技术依赖的是物理CPU和内存，是硬件级别的；Docker是构建在操作系统层面的，复用操作系统的容器化技术，所以Docker同样可以运行在虚拟机上面。
+- 虚拟机中的操作系统是一个完整的操作系统镜像，比较复杂；而Docker比较轻量级，我们可以用Docker部署一个独立的redis，就类似于在虚拟机当中安装一个redis应用，但Docker部署的应用是完全隔离的。
+- 传统的虚拟机技术是通过快照来保存状态的；而Docker引入了类似于源码管理的机制，将容器历史版本一一记录下来，切换成本非常之低。
+- 传统的虚拟化技术在构建系统的时候非常复杂；而Docker可以通过一个简单的Dockerfile文件来构建整个容器，更重要的是Dockerfile可以手动编写，这样应用程序开发都可以通过发布Dockerfile来定义应用的环境和依赖，对于持续交付非常有利。
 
 ## 安装
 
@@ -46,7 +51,7 @@ systemctl status docker
 
 首先登陆阿里云按一下步骤复制自己的镜像仓库地址
 
-![image-20201025223316453](https://gitee.com/img/20210110232107.png)
+![image-20210117130700900](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20210117130700900.png)
 
 接着新建在/etc/docker 下新建 daemon.json，并复制自己的镜像仓库地址json进去
 
@@ -73,7 +78,7 @@ docker info
 
 执行命令 docker run hello-world 页面如下
 
-![image-20201026213211250](https://gitee.com/img/20210110232111.png)
+![image-20210117130735093](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20210117130735093.png)
 
 该命令会先从本机查找是否有该镜像，如果没有则去Docker Hub上去拉取该镜像，如果也未找到则报错，否则下载该镜像到本地，然后以该镜像为模板生产容器实例运行
 
@@ -197,7 +202,7 @@ Base镜像(scratch)：Docker Hub中99%的镜像都是通过在base镜像中安�
 
 ```shell
 FROM centos
-MAINTAINER xiaoyu<xiaoyu@126.com>
+MAINTAINER xiaoyu<xxx@126.com>
 ENV MYPATH /usr/local
 WORKDIR $MYPATH
 RUN yum install -y vim
