@@ -6,11 +6,11 @@
 
 springcloud：分布式微服务架构的一站式解决方案，是多种微服务架构落地技术的集合体，俗称微服务全家桶。
 
-![image-20210117134512485](https://gitee.com/img/20210121223132.png)
+![image-20210117134512485](https://gitee.com/lugq_zh/images/raw/master/img/20210121223132.png)
 
 springboot与springcloud版本对应关系
 
-![image-20210117140210475](https://gitee.com/img/20210121223130.png)
+![image-20210117140210475](https://gitee.com/lugq_zh/images/raw/master/img/20210121223130.png)
 
 更详细版本对应关系：https://start.spring.io/actuator/info
 
@@ -34,23 +34,23 @@ boot官网手册：https://docs.spring.io/spring-boot/docs/2.2.2.RELEASE/referen
 
 设置maven
 
-<img src="https://gitee.com/img/20210121223125.png" alt="image-20210117213642010" style="zoom:67%;" />
+<img src="https://gitee.com/lugq_zh/images/raw/master/img/20210121223125.png" alt="image-20210117213642010" style="zoom:67%;" />
 
 设置java编译版本
 
-<img src="https://gitee.com/img/20210121223122.png" alt="image-20210117213736019" style="zoom:67%;" />
+<img src="https://gitee.com/lugq_zh/images/raw/master/img/20210121223122.png" alt="image-20210117213736019" style="zoom:67%;" />
 
 设置idea编码
 
-<img src="https://gitee.com/img/20210121223120.png" alt="image-20210117213426194" style="zoom: 67%;" />
+<img src="https://gitee.com/lugq_zh/images/raw/master/img/20210121223120.png" alt="image-20210117213426194" style="zoom: 67%;" />
 
 设置idea不展示无关文件
 
-<img src="https://gitee.com/img/20210121223117.png" alt="image-20210117213459700" style="zoom:67%;" />
+<img src="https://gitee.com/lugq_zh/images/raw/master/img/20210121223117.png" alt="image-20210117213459700" style="zoom:67%;" />
 
 设置idea Autoware提示错误
 
-<img src="https://gitee.com/img/20210121223115.png" alt="image-20210117213609250" style="zoom:67%;" />
+<img src="https://gitee.com/lugq_zh/images/raw/master/img/20210121223115.png" alt="image-20210117213609250" style="zoom:67%;" />
 
 设置DevTools
 
@@ -85,11 +85,11 @@ boot官网手册：https://docs.spring.io/spring-boot/docs/2.2.2.RELEASE/referen
 
 3.设置自动构建相关
 
-<img src="https://gitee.com/img/20210121223112.png" alt="image-20210117213927730" style="zoom:67%;" />
+<img src="https://gitee.com/lugq_zh/images/raw/master/img/20210121223112.png" alt="image-20210117213927730" style="zoom:67%;" />
 
 4.勾选自动运行(Ctrl+Shift+Alt+/	之后选择Registry..)
 
-<img src="https://gitee.com/img/20210121223109.png" alt="image-20210117214504844" style="zoom:67%;" />
+<img src="https://gitee.com/lugq_zh/images/raw/master/img/20210121223109.png" alt="image-20210117214504844" style="zoom:67%;" />
 
 5.重启idea并测试
 
@@ -103,7 +103,7 @@ boot官网手册：https://docs.spring.io/spring-boot/docs/2.2.2.RELEASE/referen
 
 相同代码重构：
 
-![image-20210118223450691](https://gitee.com/img/20210121223058.png)
+![image-20210118223450691](https://gitee.com/lugq_zh/images/raw/master/img/20210121223058.png)
 
 服务治理：
 
@@ -127,7 +127,7 @@ Eureka分为Server端和Client端，
 
 1.新建module
 
-<img src="https://gitee.com/img/20210121223015.png" alt="image-20210121222934574" style="zoom:80%;" />
+<img src="https://gitee.com/lugq_zh/images/raw/master/img/20210121223015.png" alt="image-20210121222934574" style="zoom:80%;" />
 
 2.修改POM文件
 
@@ -494,7 +494,7 @@ public class ApplicationContextConfig {
 </dependency>
 ```
 
-![image-20210124211750877](https://gitee.com/img/20210124211809.png)
+![image-20210124211750877](https://gitee.com/lugq_zh/images/raw/master/img/20210124211809.png)
 
 发现服务状态下含有主机名称，如果主机名称调整，则这里会同步变更
 
@@ -520,7 +520,7 @@ eureka:
 
 ### 2.访问信息有IP信息提示
 
-希望点击![image-20210124211959883](https://gitee.com/img/20210124212001.png)
+希望点击![image-20210124211959883](https://gitee.com/lugq_zh/images/raw/master/img/20210124212001.png)
 
 后查看到相关的ip信息，修改yml文件
 
@@ -538,7 +538,7 @@ eureka:
 
 此时点击
 
-![image-20210124213347337](https://gitee.com/img/20210124213349.png)
+![image-20210124213347337](https://gitee.com/lugq_zh/images/raw/master/img/20210124213349.png)
 
 后会跳转到对应ip地址上面，说明配置成功
 
@@ -600,7 +600,7 @@ info:
 
 然后访问payment8001显示如下
 
-![image-20210124221038805](https://gitee.com/img/20210124221040.png)
+![image-20210124221038805](https://gitee.com/lugq_zh/images/raw/master/img/20210124221040.png)
 
 
 
@@ -667,7 +667,7 @@ eureka:
 
 此时访问 http://eureka7001.com:7001/ 出现如下提示，说明已经关闭自我保护机制
 
-![image-20210127222047552](https://gitee.com/img/20210127222056.png)
+![image-20210127222047552](https://gitee.com/lugq_zh/images/raw/master/img/20210127222056.png)
 
 接下来调整cloud-provider-payment8001配置文件
 
@@ -823,7 +823,7 @@ public class PaymentController {
 
 接着启动主启动类，然后使用zookeeper客户端登录查看发现服务正常注册
 
-![image-20210131212623636](https://gitee.com/img/20210131212625.png)然后访问http://localhost:8004/payment/zk 页面打印
+![image-20210131212623636](https://gitee.com/lugq_zh/images/raw/master/img/20210131212625.png)然后访问http://localhost:8004/payment/zk 页面打印
 
 springcloud with zookeeper :8004 1fdcff9d-2ceb-4d9a-9ae0-61a114937bd7
 
@@ -957,7 +957,7 @@ consumer调用provider=======springcloud with zookeeper :8004 788f6f7f-3db7-4379
 
 说明调用成功，此时查看zookeeper中的服务发现服务提供者和消费者都已经注册成功
 
-![image-20210131215307104](https://gitee.com/img/20210131215308.png)
+![image-20210131215307104](https://gitee.com/lugq_zh/images/raw/master/img/20210131215308.png)
 
 ## Consul注册中心
 
@@ -973,7 +973,7 @@ Spring Cloud Consul具有如下特性:
 
 运行 consul.exe agent -dev 后访问 http://localhost:8500/ui/dc1/services 可以看到consul的web页面
 
-![image-20210131222721732](https://gitee.com/img/20210131222723.png)
+![image-20210131222721732](https://gitee.com/lugq_zh/images/raw/master/img/20210131222723.png)
 
 ### 服务提供者
 
@@ -1265,13 +1265,13 @@ Ribbon其实是一个软负载均衡的客户端组件，他可以和其他所�
 
 之前写样例的时候并没有引入spring-cloud-starter-ribbon也可以使用ribbon，是因为我们引入了新版的spring-cloud-starter-netflix-eureka-client中已经引入了spring-cloud-starter-netflix-ribbon的依赖
 
-![image-20210206221844875](https://gitee.com/img/20210206221945.png)
+![image-20210206221844875](https://gitee.com/lugq_zh/images/raw/master/img/20210206221945.png)
 
 ### 核心组件IRule
 
 IRule：根据特定算法中从服务列表中选取一个要访问的服务
 
-![image-20210206223924586](https://gitee.com/img/20210206223925.png)
+![image-20210206223924586](https://gitee.com/lugq_zh/images/raw/master/img/20210206223925.png)
 
 RoundRobinRule：轮询
 
@@ -2381,7 +2381,7 @@ public class PaymentController {
 
 3.熔断半开：部分请求根据规则调用当前服务，如果请求成功且符合规则，则认为当前服务恢复正常，关闭熔断
 
-![img](https://gitee.com/img/20210214161620.png)
+![img](https://gitee.com/lugq_zh/images/raw/master/img/20210214161620.png)
 
 涉及到断路器的三个重要参数：快照时间窗，请求总数阈值，错误百分比阈值
 
@@ -3836,7 +3836,7 @@ public String paymentZipkin() {
 
 SpringCloud Netflix项目进入维护模式
 
-## 主要功能
+### 主要功能
 
 - **服务限流降级**：默认支持 WebServlet、WebFlux, OpenFeign、RestTemplate、Spring Cloud Gateway, Zuul, Dubbo 和 RocketMQ 限流降级功能的接入，可以在运行时通过控制台实时修改限流降级规则，还支持查看限流降级 Metrics 监控。
 - **服务注册与发现**：适配 Spring Cloud 服务注册与发现标准，默认集成了 Ribbon 的支持。
@@ -3847,7 +3847,7 @@ SpringCloud Netflix项目进入维护模式
 - **分布式任务调度**：提供秒级、精准、高可靠、高可用的定时（基于 Cron 表达式）任务调度服务。同时提供分布式的任务执行模型，如网格任务。网格任务支持海量子任务均匀分配到所有 Worker（schedulerx-client）上执行。
 - **阿里云短信服务**：覆盖全球的短信服务，友好、高效、智能的互联化通讯能力，帮助企业迅速搭建客户触达通道。
 
-## 已包含的组件
+### 已包含的组件
 
 **Sentinel**
 
@@ -3881,7 +3881,7 @@ Apache Dubbo™ 是一款高性能 Java RPC 框架。
 
 覆盖全球的短信服务，友好、高效、智能的互联化通讯能力，帮助企业迅速搭建客户触达通道。
 
-## Spring Cloud Alibaba Nacos
+## Spring Cloud Alibaba Nacos服务注册和配置中心
 
 官网地址 https://nacos.io/zh-cn/
 
@@ -4143,7 +4143,7 @@ public class OrderNacosController {
 
 然后启动nacos、cloudalibaba-provider-payment9001、cloudalibaba-provider-payment9002、cloudalibaba-consumer-nacos-order83 后查看nacos控制台，可以看到三个服务已经注册成功。此时重复访问 http://localhost:83/consumer//payment/nacos/1 可以看到其会交替返回9001和9002的结果。Nacos支持AP和CP的切换。
 
-<img src="https://gitee.com/img/20210221213006.png" alt="image-20210221212819005" style="zoom:50%;" />
+<img src="https://gitee.com/lugq_zh/images/raw/master/img/20210221213006.png" alt="image-20210221212819005" style="zoom:50%;" />
 
 ### Nacos的AP和CP
 
@@ -4273,7 +4273,7 @@ public class ConfigClientController {
 
 启动nacos并在控制台新建配置
 
-![image-20210221225215859](https://gitee.com/img/20210221225217.png)
+![image-20210221225215859](https://gitee.com/lugq_zh/images/raw/master/img/20210221225217.png)
 
 启动 cloudalibaba-config-nacos-client3377 并访问  http://localhost:3377/config/info 可以正常访问到配置中心的内容。此时如果修改配置中心的内容后再次请求可以看到配置已经实时刷新。
 
@@ -4291,61 +4291,284 @@ ${prefix}-${spring.profiles.active}.${file-extension}
 
 #### 分类配置
 
+它由Namespace+Group+Data ID三者构成，类似于java中的package名和类名，最外层的namespace是可以用于区分部署环境的，Group和DataID逻辑上区分两个目标对象。
+
+<img src="https://gitee.com/lugq_zh/images/raw/master/img/20210222222359.jpeg" alt="nacos_data_model" style="zoom:80%;" />
+
+默认情况：Namespace=public，Group=DEFAULT_GROUP，Cluster=DEFAULT。
+
+Nacos默认的命名空间是public，Namespace主要用来实现隔离。比方说我们现在有三个环境，开发、测试、生产环境。我们就可以创建三个Namespace。不同的Namespace之间是隔离的。Group默认是DEFAULT_GROUP，Group可以把不同的微服务划分到同一个分组里面去。Service就是微服务，一个Service可以包含多个Cluster(集群)，Nacos默认Cluster是DEFAULT，Cluster是对指定微服务的一个虚拟划分，比方说为了容灾，将Service微服务分别部署在了杭州和广州机房，这是就可以给杭州机房的Service微服务起一个集群名称(HZ)。给广州机房的Service微服务起一个集群名称(GZ)。还可以尽量让同一个机房的微服务互相调用，以提升性能。最后是Instance，就是微服务的实例。
+
+### 集群和持久化配置
+
+<img src="https://gitee.com/lugq_zh/images/raw/master/img/20210223220530.jpeg" alt="deployDnsVipMode.jpg" style="zoom: 67%;" />
+
+默认Nacos使用嵌入式数据库实现数据的存储，所以如果启动多个默认配置下的Nacos节点，数据存储是存在一致性问题的，为了解决这个问题，Nacos采用了集中式存储的方式来支持集群化部署，目前只支持MySQL的存储。
+
+三种部署方式：1.单机模式-用于测试和单机使用。2.集群模式-用于生产环境，确保高可用。3.多集群模式-用于多数据中心场景。
+
+Nacos默认自带的是嵌入式数据库derby。
+
+将默认数据库调整为MySQL。1.找到nacos\conf\nacos-mysql.sql脚本并执行。
+
+找到nacos\conf\application.properties文件，新增配置
+
+```properties
+spring.datasource.platform=mysql
+# Count of DB:
+db.num=1
+# Connect URL of DB:
+db.url.0=jdbc:mysql://127.0.0.1:3306/nacos_config?characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useUnicode=true&useSSL=false&serverTimezone=UTC
+db.user.0=root
+db.password.0=admin
+```
+
+重启nacos，并访问 http://localhost:8848/nacos 登录后可以看到我们之前配置的内容已经全部没有了，说明数据库切换成功。
+
+接下来我们搭建集群。1个nginx、3个nacos、1个MySQL(nginx和nacos都放在同一台linux机器上，通过端口号做区分)。首先下载linux版本的nacos 。https://github-releases.githubusercontent.com/137451403/95b2c380-0091-11ea-8509-0ef72832a816?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20210224%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20210224T132323Z&X-Amz-Expires=300&X-Amz-Signature=f5bf80f2a9329dcf7aab8ad7c5f57309b54492b3b061bd027542725fef8e8586&X-Amz-SignedHeaders=host&actor_id=24733117&key_id=0&repo_id=137451403&response-content-disposition=attachment%3B%20filename%3Dnacos-server-1.1.4.tar.gz&response-content-type=application%2Foctet-stream
+
+下载完成后上传到 linux(**192.168.136.142**)，然后解压并修改conf下的 application.properties文件，新增MySQL配置
+
+```properties
+spring.datasource.platform=mysql
+# Count of DB:
+db.num=1
+# Connect URL of DB:
+db.url.0=jdbc:mysql://192.168.2.219:3306/nacos_config?characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useUnicode=true&useSSL=false&serverTimezone=UTC
+db.user.0=root
+db.password.0=admin
+```
+
+修改conf下的cluster.conf 文件，新增集群配置。注意这个ip必须是hostname -i能够识别的ip。
+
+```
+192.168.136.142:3333
+192.168.136.142:4444
+192.168.136.142:5555
+```
+
+接下来编辑nacos的启动脚本startup.sh，使他能够接受不同的启动端口。集群启动，我们希望可以类似其他软件的shell命令，传递不同的端口号启动不同的nacos实例。命令：./startup.sh -p 3333表示启动端口号为3333的nacos服务器实例，和上一步的cluster.conf配置的一致。
+
+修改startup.sh。
 
 
 
+```shell
+# 添加p参数
+while getopts ":m:f:s:p:" opt
+do
+    case $opt in
+        m)
+            MODE=$OPTARG;;
+        f)
+            FUNCTION_MODE=$OPTARG;;
+        s)
+            SERVER=$OPTARG;;
+        p)   #新增p选项
+            PORT=$OPTARG;;
+        ?)
+        echo "Unknown parameter"
+        exit 1;;
+    esac
+done
+......
+#添加-Dserver.port=${PORT}
+nohup $JAVA -Dserver.port=${PORT} ${JAVA_OPT} nacos.nacos >> ${BASE_DIR}/logs/start.out 2>&1 &
+```
 
+接着下载中安装nginx，并修改其配置文件
 
+```shell
+user nginx;
+worker_processes auto;
+error_log /var/log/nginx/error.log;
+pid /run/nginx.pid;
+include /usr/share/nginx/modules/*.conf;
+events {
+    worker_connections 1024;
+}
+http {
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+    access_log  /var/log/nginx/access.log  main;
+    sendfile            on;
+    tcp_nopush          on;
+    tcp_nodelay         on;
+    keepalive_timeout   65;
+    types_hash_max_size 2048;
+    include             /etc/nginx/mime.types;
+    default_type        application/octet-stream;
+    include /etc/nginx/conf.d/*.conf;
+    upstream cluster {#负载均衡
+        server 192.168.136.142:3333;
+        server 192.168.136.142:4444;
+        server 192.168.136.142:5555;
+    }
+    server {
+        listen       1111; #修改端口号
+        server_name  _;
+        root         /usr/share/nginx/html;
+        include /etc/nginx/default.d/*.conf;
+        location / {#映射到cluster
+            proxy_pass http://cluster;
+        }
+        error_page 404 /404.html;
+        location = /404.html {
+        }
+        error_page 500 502 503 504 /50x.html;
+        location = /50x.html {
+        }
+    }
+}
+```
 
+最后启动，nginx ； startup.sh -p 3333； startup.sh -p 4444； startup.sh -p 5555 ； ps -ef|grep nacos
 
+可以看到已经启动三个nacos实例。
 
+## Spring Cloud Alibaba Sentinel熔断与限流
 
+### Sentinel 具有以下特征:
 
+- **丰富的应用场景**：Sentinel 承接了阿里巴巴近 10 年的双十一大促流量的核心场景，例如秒杀（即突发流量控制在系统容量可以承受的范围）、消息削峰填谷、集群流量控制、实时熔断下游不可用应用等。
+- **完备的实时监控**：Sentinel 同时提供实时的监控功能。您可以在控制台中看到接入应用的单台机器秒级数据，甚至 500 台以下规模的集群的汇总运行情况。
+- **广泛的开源生态**：Sentinel 提供开箱即用的与其它开源框架/库的整合模块，例如与 Spring Cloud、Dubbo、gRPC 的整合。您只需要引入相应的依赖并进行简单的配置即可快速地接入 Sentinel。
+- **完善的 SPI 扩展点**：Sentinel 提供简单易用、完善的 SPI 扩展接口。您可以通过实现扩展接口来快速地定制逻辑。例如定制规则管理、适配动态数据源等。
 
+![Sentinel-features-overview](https://user-images.githubusercontent.com/9434884/50505538-2c484880-0aaf-11e9-9ffc-cbaaef20be2b.png)
 
+总结就是：1.服务雪崩；2.服务降级；3.服务熔断；4.服务限流
 
+### Sentinel 的使用可以分为两个部分:
 
+- 核心库（Java 客户端）：不依赖任何框架/库，能够运行于 Java 7 及以上的版本的运行时环境，同时对 Dubbo / Spring Cloud 等框架也有较好的支持（见 [主流框架适配](https://github.com/alibaba/Sentinel/wiki/主流框架的适配)）。
+- 控制台（Dashboard）：控制台主要负责管理推送规则、监控、集群限流分配管理、机器发现等。
 
+### Sentinel安装控制台
 
+下载 dashboard https://github.com/alibaba/Sentinel/releases/tag/1.7.0 并运行 java -jar sentinel-dashboard-1.7.0.jar 。然后访问 localhost:8080 可以看到sentinel的控制台 ，默认的用户名密码为sentinel/sentinel
 
+### 初始化测试工程
 
+#### 1.启动Nacos8848
 
+在nacos的bin目录下执行 startup.cmd -m standalone 然后访问localhost:8848/nacos 成功。
 
+#### 2.新建 cloudalibaba-sentinel-service8401
 
+修改pom文件
 
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>springcloud</artifactId>
+        <groupId>com.yango.springcloud</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>cloudalibaba-sentinel-service8401</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-datasource-nacos</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>
+```
 
+新建配置文件
 
+```yml
+server:
+  port: 8401
+spring:
+  application:
+    name: cloudalibaba-sentinel-service
+  cloud:
+    nacos:
+      discovery: #nacos服务注册中心地址
+        server-addr: localhost:8848
+    sentinel:
+      transport: #配置Sentinel dashboard地址
+        dashboard: localhost:8080
+        port: 8719 #默认8719端口，加入别占用自动从8709开始依次+1扫描，直至找到未被占用的端口
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+```
 
+新建主启动类
 
+```java
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+@SpringBootApplication
+@EnableDiscoveryClient
+public class MainApp8401 {
+    public static void main(String[] args) {
+        SpringApplication.run(MainApp8401.class, args);
+    }
+}
+```
 
+新建测试接口
 
+```java
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+@RestController
+@Slf4j
+public class FlowLimitController {
+    @GetMapping("/testA")
+    public String testA() {
+        return "--------testA--------";
+    }
+    @GetMapping("/testB")
+    public String testB() {
+        return "--------testB--------";
+    }
+}
+```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+启动cloudalibaba-sentinel-service8401 服务并访问sentinel控制台查看。此时控制台并没有任何服务，此时需要执行一次服务的调用才能正常查看。
 
 
 
