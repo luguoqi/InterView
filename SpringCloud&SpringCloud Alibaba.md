@@ -4570,39 +4570,217 @@ public class FlowLimitController {
 
 启动cloudalibaba-sentinel-service8401 服务并访问sentinel控制台查看。此时控制台并没有任何服务，此时需要执行一次服务的调用才能正常查看。
 
+### 流控规则
 
+![image-20210227165930699](https://gitee.com/lugq_zh/images/raw/master/img/20210227165934.png)
 
+配置简介
 
+资源名：唯一名称，默认请求路径。
 
+针对来源：Sentinel可以针对调用者进行限流，填写微服务名，默认default(不区分来源)。
 
+阈值类型/单机/阈值:
 
+​	QPS:(每秒钟的请求数量)：当调用该api的QPS达到阈值的时候，进行限流。
 
+​	线程数：当调用该api的线程数达到阈值的时候，进行限流。
 
+是否集群：不需要集群。
 
+流控模式：
 
+​	直接：api达到限流条件时，直接限流。
 
+​	关联：当关联的资源达到阈值时，就限流自己。
 
+​	链路：只记录指定链路上的流量(指定资源从入口资源进来的流量，如果达到阈值，就进行限流)【api级别的针对来源】。
 
+流控效果：
 
+​	快速失败：直接失败，抛异常。
 
+​	Warm Up：根据codeFactor(冷加载因子，默认3)的值，从阈值codeFactor，经过预热时长，才达到设置的QPS阈值。如秒杀系统在开启的瞬间，会有很多流量上来，很可能把系统打死，预热方式就是为了保护系统，把流量慢慢的放进来，慢慢的把阈值增长到设置的阈值。
 
+​	排队等待：匀速排队，让请求以匀速的速度通过，阈值类型必须设置QPS，否则无效。
 
+### 降级规则
 
+RT：(平均响应时间，秒级)
 
+​	平均响应时间 超出阈值 且在时间窗口内通过的请求>=5，两个条件同时满足后触发降级。
 
+​	窗口期过后关闭断路器。
 
+​	RT最大4900(更大的需要通过-Dcsp.sentinel.statistic.max.rt=XXX才能生效)
 
+异常比例(秒级)
 
+​	QPS>=5且异常比例(秒级统计)超过阈值时，触发降级，时间窗口期结束后，关闭降级。
 
+异常数(分钟级)
 
+​	异常数(分钟统计)超过阈值时，触发降级，时间窗口期结束后，关闭降级。
 
+sentinel熔断降级会在调用链路中某个资源出现不稳定状态时(例如调用超时或异常比例升高)，对这个资源的调用进行限制，让请求快速失败，避免影响到其他的资源而导致级联错误。
 
+当资源被降级后，在接下来的降级时间窗口之内，对该资源的调用都自动熔断(默认行为是抛出DegradeException)。
 
+Sentinel 提供以下几种熔断策略：
 
+- 慢调用比例 (`SLOW_REQUEST_RATIO`)：选择以慢调用比例作为阈值，需要设置允许的慢调用 RT（即最大的响应时间），请求的响应时间大于该值则统计为慢调用。当单位统计时长（`statIntervalMs`）内请求数目大于设置的最小请求数目，并且慢调用的比例大于阈值，则接下来的熔断时长内请求会自动被熔断。经过熔断时长后熔断器会进入探测恢复状态（HALF-OPEN 状态），若接下来的一个请求响应时间小于设置的慢调用 RT 则结束熔断，若大于设置的慢调用 RT 则会再次被熔断。
+- 异常比例 (`ERROR_RATIO`)：当单位统计时长（`statIntervalMs`）内请求数目大于设置的最小请求数目，并且异常的比例大于阈值，则接下来的熔断时长内请求会自动被熔断。经过熔断时长后熔断器会进入探测恢复状态（HALF-OPEN 状态），若接下来的一个请求成功完成（没有错误）则结束熔断，否则会再次被熔断。异常比率的阈值范围是 `[0.0, 1.0]`，代表 0% - 100%。
+- 异常数 (`ERROR_COUNT`)：当单位统计时长内的异常数目超过阈值之后会自动进行熔断。经过熔断时长后熔断器会进入探测恢复状态（HALF-OPEN 状态），若接下来的一个请求成功完成（没有错误）则结束熔断，否则会再次被熔断。
 
+### 热点key限流
 
+何为热点？热点即经常访问的数据。很多时候我们希望统计某个热点数据中访问频次最高的 Top K 数据，并对其访问进行限制。比如：
 
+- 商品 ID 为参数，统计一段时间内最常购买的商品 ID 并进行限制
+- 用户 ID 为参数，针对一段时间内频繁访问的用户 ID 进行限制
 
+热点参数限流会统计传入参数中的热点参数，并根据配置的限流阈值与模式，对包含热点参数的资源调用进行限流。热点参数限流可以看做是一种特殊的流量控制，仅对包含热点参数的资源调用生效。
+
+### 系统自适应限流
+
+Sentinel 系统自适应限流从整体维度对应用入口流量进行控制，结合应用的 Load、CPU 使用率、总体平均 RT、入口 QPS 和并发线程数等几个维度的监控指标，通过自适应的流控策略，让系统的入口流量和系统的负载达到一个平衡，让系统尽可能跑在最大吞吐量的同时保证系统整体的稳定性。Sentinel 系统自适应限流从整体维度对应用入口流量进行控制，结合应用的 Load、CPU 使用率、总体平均 RT、入口 QPS 和并发线程数等几个维度的监控指标，通过自适应的流控策略，让系统的入口流量和系统的负载达到一个平衡，让系统尽可能跑在最大吞吐量的同时保证系统整体的稳定性。
+
+### 系统规则
+
+系统保护规则是从应用级别的入口流量进行控制，从单台机器的 load、CPU 使用率、平均 RT、入口 QPS 和并发线程数等几个维度监控应用指标，让系统尽可能跑在最大吞吐量的同时保证系统整体的稳定性。
+
+系统保护规则是应用整体维度的，而不是资源维度的，并且**仅对入口流量生效**。入口流量指的是进入应用的流量（`EntryType.IN`），比如 Web 服务或 Dubbo 服务端接收的请求，都属于入口流量。
+
+系统规则支持以下的模式：
+
+- **Load 自适应**（仅对 Linux/Unix-like 机器生效）：系统的 load1 作为启发指标，进行自适应系统保护。当系统 load1 超过设定的启发值，且系统当前的并发线程数超过估算的系统容量时才会触发系统保护（BBR 阶段）。系统容量由系统的 `maxQps * minRt` 估算得出。设定参考值一般是 `CPU cores * 2.5`。
+- **CPU usage**（1.5.0+ 版本）：当系统 CPU 使用率超过阈值即触发系统保护（取值范围 0.0-1.0），比较灵敏。
+- **平均 RT**：当单台机器上所有入口流量的平均 RT 达到阈值即触发系统保护，单位是毫秒。
+- **并发线程数**：当单台机器上所有入口流量的并发线程数达到阈值即触发系统保护。
+- **入口 QPS**：当单台机器上所有入口流量的 QPS 达到阈值即触发系统保护。
+
+### @SentinelResource 注解
+
+> 注意：注解方式埋点不支持 private 方法。
+
+`@SentinelResource` 用于定义资源，并提供可选的异常处理和 fallback 配置项。 `@SentinelResource` 注解包含以下属性：
+
+- `value`：资源名称，必需项（不能为空）
+
+- `entryType`：entry 类型，可选项（默认为 `EntryType.OUT`）
+
+- `blockHandler` / `blockHandlerClass`: `blockHandler` 对应处理 `BlockException` 的函数名称，可选项。blockHandler 函数访问范围需要是 `public`，返回类型需要与原方法相匹配，参数类型需要和原方法相匹配并且最后加一个额外的参数，类型为 `BlockException`。blockHandler 函数默认需要和原方法在同一个类中。若希望使用其他类的函数，则可以指定 `blockHandlerClass` 为对应的类的 `Class` 对象，注意对应的函数必需为 static 函数，否则无法解析。
+
+  fallback/fallbackClass：fallback 函数名称，可选项，用于在抛出异常的时候提供 fallback 处理逻辑。fallback 函数可以针对所有类型的异常（除了exceptionsToIgnore里面排除掉的异常类型）进行处理。fallback 函数签名和位置要求：
+
+  - 返回值类型必须与原函数返回值类型一致；
+  - 方法参数列表需要和原函数一致，或者可以额外多一个 `Throwable` 类型的参数用于接收对应的异常。
+  - fallback 函数默认需要和原方法在同一个类中。若希望使用其他类的函数，则可以指定 `fallbackClass` 为对应的类的 `Class` 对象，注意对应的函数必需为 static 函数，否则无法解析。
+  - defaultFallback（since 1.6.0）：默认的 fallback 函数名称，可选项，通常用于通用的 fallback 逻辑（即可以用于很多服务或方法）。默认 fallback 函数可以针对所有类型的异常（除了exceptionsToIgnore里面排除掉的异常类型）进行处理。若同时配置了 fallback 和 defaultFallback，则只有 fallback 会生效。defaultFallback 函数签名要求：
+
+  - 返回值类型必须与原函数返回值类型一致；
+  - 方法参数列表需要为空，或者可以额外多一个 `Throwable` 类型的参数用于接收对应的异常。
+  - defaultFallback 函数默认需要和原方法在同一个类中。若希望使用其他类的函数，则可以指定 `fallbackClass` 为对应的类的 `Class` 对象，注意对应的函数必需为 static 函数，否则无法解析。
+
+- `exceptionsToIgnore`（since 1.6.0）：用于指定哪些异常被排除掉，不会计入异常统计中，也不会进入 fallback 逻辑中，而是会原样抛出。
+
+1.8.0 版本开始，`defaultFallback` 支持在类级别进行配置。
+
+> 注：1.6.0 之前的版本 fallback 函数只针对降级异常（`DegradeException`）进行处理，**不能针对业务异常进行处理**。
+
+特别地，若 blockHandler 和 fallback 都进行了配置，则被限流降级而抛出 `BlockException` 时只会进入 `blockHandler` 处理逻辑。若未配置 `blockHandler`、`fallback` 和 `defaultFallback`，则被限流降级时会将 `BlockException` **直接抛出**（若方法本身未定义 throws BlockException 则会被 JVM 包装一层 `UndeclaredThrowableException`）。
+
+## Spring Cloud Alibaba Seata分布式事务
+
+单体应用别拆分成微服务应用，原来的三个模块别拆分成三个独立的应用，分别是三个独立的数据源，业务操作需要调用三个服务来完成，此时每个服务内部的数据一致性由本地事务来保证，但是全局的数据一致性问题没法保证。一次业务操作需要跨多个数据源或需要跨多个系统进行远程调用，就会产生分布式事务问题。
+
+Seata 是一款开源的分布式事务解决方案，致力于提供高性能和简单易用的分布式事务服务。Seata 将为用户提供了 AT、TCC、SAGA 和 XA 事务模式，为用户打造一站式的分布式解决方案。
+
+#### TC (Transaction Coordinator) - 事务协调者
+
+维护全局和分支事务的状态，驱动全局事务提交或回滚。
+
+#### TM (Transaction Manager) - 事务管理器
+
+定义全局事务的范围：开始全局事务、提交或回滚全局事务。
+
+#### RM (Resource Manager) - 资源管理器
+
+管理分支事务处理的资源，与TC交谈以注册分支事务和报告分支事务的状态，并驱动分支事务提交或回滚。
+
+官网下载 seata https://github.com/seata/seata/releases/tag/v0.9.0 ，修改conf/file.conf 
+
+```json
+service {
+  #vgroup->rgroup
+  vgroup_mapping.my_test_tx_group = "lugq_tx_group" #修改此处的名称
+  #only support single node
+  default.grouplist = "127.0.0.1:8091"
+  #degrade current not support
+  enableDegrade = false
+  #disable
+  disable = false
+  #unit ms,s,m,h,d represents milliseconds, seconds, minutes, hours, days, default permanent
+  max.commit.retry.timeout = "-1"
+  max.rollback.retry.timeout = "-1"
+}
+......
+store {
+  ## store mode: file、db
+  mode = "db" #修改为db模式
+
+  ## file store
+  file {
+    dir = "sessionStore"
+
+    # branch session size , if exceeded first try compress lockkey, still exceeded throws exceptions
+    max-branch-session-size = 16384
+    # globe session size , if exceeded throws exceptions
+    max-global-session-size = 512
+    # file buffer size , if exceeded allocate new buffer
+    file-write-buffer-cache-size = 16384
+    # when recover batch read size
+    session.reload.read_size = 100
+    # async, sync
+    flush-disk-mode = async
+  }
+
+  ## database store
+  db {
+    ## the implement of javax.sql.DataSource, such as DruidDataSource(druid)/BasicDataSource(dbcp) etc.
+    datasource = "dbcp"
+    ## mysql/oracle/h2/oceanbase etc.
+    db-type = "mysql"
+    driver-class-name = "com.mysql.jdbc.Driver" #修改数据库连接相关信息
+    url = "jdbc:mysql://127.0.0.1:3306/seata"
+    user = "root"
+    password = "admin"
+    min-conn = 1
+    max-conn = 3
+    global.table = "global_table"
+    branch.table = "branch_table"
+    lock-table = "lock_table"
+    query-limit = 100
+  }
+}
+......
+```
+
+创建seata数据库并执行conf/db_store.sql脚本
+
+修改conf/registry.conf 文件
+
+```json
+registry {
+  # file 、nacos 、eureka、redis、zk、consul、etcd3、sofa
+  type = "nacos"	#知名 注册中心为nacos
+
+  nacos {
+    serverAddr = "localhost:8848"
+    namespace = ""
+    cluster = "default"
+  }
+```
 
 
 
