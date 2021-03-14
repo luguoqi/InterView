@@ -4782,7 +4782,7 @@ registry {
   }
 ```
 
-
+启动nacos和seata
 
 
 
