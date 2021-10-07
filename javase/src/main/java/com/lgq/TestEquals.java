@@ -1,4 +1,4 @@
-package com.yango;
+package com.lgq;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,7 +16,7 @@ public class TestEquals {
         String s2 = new String("abc");
 //      由于此处是new所以比较的是对象的地址值
         System.out.println(s1==s2);
-//        此处因为string重写了equals方法，其比较的是值
+//        此处因为string重写了equals方法，其比较的是值27
         System.out.println(s1.equals(s2));
         System.out.println(s1.hashCode() + "\t" + s2.hashCode());
 //        HashSet底层是HashMap，其使用hashcode来确定key所在hash表的位置，由于string重写了hashcode，所以此处的hashcode值一样，

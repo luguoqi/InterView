@@ -1,4 +1,4 @@
-package com.yango;
+package com.lgq;
 
 class Father {
     public Father() {

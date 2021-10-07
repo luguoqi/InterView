@@ -1,4 +1,4 @@
-package com.yango.distribute.lock;
+package com.lgq.distribute.lock;
 
 import org.I0Itec.zkclient.ZkClient;
 

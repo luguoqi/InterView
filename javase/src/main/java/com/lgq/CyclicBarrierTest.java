@@ -1,4 +1,4 @@
-package com.yango;
+package com.lgq;
 
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;

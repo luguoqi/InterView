@@ -140,7 +140,7 @@ Eureka分为Server端和Client端，
     </dependency>
     <!--自定义api通用包-->
     <dependency>
-        <groupId>com.yango.springcloud</groupId>
+        <groupId>com.lgq.springcloud</groupId>
         <artifactId>cloud-api-commons</artifactId>
         <version>${project.version}</version>
     </dependency>
@@ -238,7 +238,7 @@ eureka:
       defaultZone: http://localhost:7001/eureka #设置eurekaServer地址
 mybatis:
   mapper-locations: classpath:mapper/*.xml
-  type-aliases-package: com.yango.springcloud.entities  #所有entity别名所在包
+  type-aliases-package: com.lgq.springcloud.entities  #所有entity别名所在包
 ```
 
 ```java
@@ -416,7 +416,7 @@ eureka:
       defaultZone: http://eureka7001:7001/eureka,http://eureka7002:7002/eureka #设置eurekaServer地址
 mybatis:
   mapper-locations: classpath:mapper/*.xml
-  type-aliases-package: com.yango.springcloud.entities  #所有entity别名所在包
+  type-aliases-package: com.lgq.springcloud.entities  #所有entity别名所在包
 ```
 
 然后先启动cloud-eureka-server7001和cloud-eureka-server7002，再启动cloud-provider-payment8001和cloud-customer-order80
@@ -710,7 +710,7 @@ info:
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
-  type-aliases-package: com.yango.springcloud.entities  #所有entity别名所在包
+  type-aliases-package: com.lgq.springcloud.entities  #所有entity别名所在包
 ```
 
 这时候我们启动cloud-provider-payment8001，发现eureka上注册成功，此时我们再关闭cloud-provider-payment8001，发现eureka在2秒后剔除了cloud-provider-payment8001服务
@@ -730,14 +730,14 @@ mybatis:
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>springcloud</artifactId>
-        <groupId>com.yango.springcloud</groupId>
+        <groupId>com.lgq.springcloud</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>cloud-provider-payment8004</artifactId>
     <dependencies>
         <dependency>
-            <groupId>com.yango.springcloud</groupId>
+            <groupId>com.lgq.springcloud</groupId>
             <artifactId>cloud-api-commons</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -840,14 +840,14 @@ springcloud with zookeeper :8004 1fdcff9d-2ceb-4d9a-9ae0-61a114937bd7
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>springcloud</artifactId>
-        <groupId>com.yango.springcloud</groupId>
+        <groupId>com.lgq.springcloud</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>cloud-customerzk-order80</artifactId>
     <dependencies>
         <dependency>
-            <groupId>com.yango.springcloud</groupId>
+            <groupId>com.lgq.springcloud</groupId>
             <artifactId>cloud-api-commons</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -986,7 +986,7 @@ Spring Cloud Consul具有如下特性:
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>springcloud</artifactId>
-        <groupId>com.yango.springcloud</groupId>
+        <groupId>com.lgq.springcloud</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -999,7 +999,7 @@ Spring Cloud Consul具有如下特性:
             <artifactId>spring-cloud-starter-consul-discovery</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.yango.springcloud</groupId>
+            <groupId>com.lgq.springcloud</groupId>
             <artifactId>cloud-api-commons</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -1099,7 +1099,7 @@ public class PaymentController {
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>springcloud</artifactId>
-        <groupId>com.yango.springcloud</groupId>
+        <groupId>com.lgq.springcloud</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -1111,7 +1111,7 @@ public class PaymentController {
             <artifactId>spring-cloud-starter-consul-discovery</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.yango.springcloud</groupId>
+            <groupId>com.lgq.springcloud</groupId>
             <artifactId>cloud-api-commons</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -1177,7 +1177,7 @@ public class OrderConsulMain80 {
 新建配置类，配置RestTemplate
 
 ```java
-package com.yango.springcloud.config;
+package com.lgq.springcloud.config;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -1294,7 +1294,7 @@ Ribbon的负载均衡配置类不能放在@ComponentScan所扫描的当前包下
 新建配置类，注意其不能在主启动类所扫描的包下
 
 ```java
-package com.yango.myrule;
+package com.lgq.myrule;
 
 import com.netflix.loadbalancer.IRule;
 import com.netflix.loadbalancer.RandomRule;
@@ -1326,7 +1326,7 @@ public class MySelfRule {
 手写负载均衡算法，注意注释掉原有注入RestTemplate注入的注解@LoadBalanced
 
 ```java
-package com.yango.springcloud.lb;
+package com.lgq.springcloud.lb;
 import org.springframework.cloud.client.ServiceInstance;
 import java.util.List;
 /**
@@ -1338,8 +1338,8 @@ public interface ILoadBalancer {
 ```
 
 ```java
-package com.yango.springcloud.lb.impl;
-import com.yango.springcloud.lb.ILoadBalancer;
+package com.lgq.springcloud.lb.impl;
+import com.lgq.springcloud.lb.ILoadBalancer;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.stereotype.Component;
 import java.util.List;
@@ -1372,11 +1372,11 @@ public class MyLB implements ILoadBalancer {
 ```
 
 ```java
-package com.yango.springcloud.controller;
+package com.lgq.springcloud.controller;
 
-import com.yango.springcloud.entities.CommonResult;
-import com.yango.springcloud.entities.Payment;
-import com.yango.springcloud.lb.ILoadBalancer;
+import com.lgq.springcloud.entities.CommonResult;
+import com.lgq.springcloud.entities.Payment;
+import com.lgq.springcloud.lb.ILoadBalancer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
@@ -1388,7 +1388,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-import sun.rmi.server.LoaderHandler;
 
 import javax.annotation.Resource;
 import java.net.URI;
@@ -1415,7 +1414,7 @@ public class OrderController {
     @GetMapping("/payment/lb")
     public String getPaymentLB() {
         List<ServiceInstance> instances = discoveryClient.getInstances("CLOUD-PAYMENT-SERVICE");
-        if(instances == null || instances.size() <= 0) {
+        if (instances == null || instances.size() <= 0) {
             return null;
         }
         ServiceInstance serviceInstance = loadBalancer.instance(instances);
@@ -1487,7 +1486,7 @@ openFeign默认支持Ribbon，自带负载均衡配置项，openfeign底层就�
         <scope>test</scope>
     </dependency>
     <dependency>
-        <groupId>com.yango.springcloud</groupId>
+        <groupId>com.lgq.springcloud</groupId>
         <artifactId>cloud-api-commons</artifactId>
         <version>1.0-SNAPSHOT</version>
         <scope>compile</scope>
@@ -1527,8 +1526,8 @@ public class OrderFeignMain80 {
 新建feign代理接口
 
 ```java
-import com.yango.springcloud.entities.CommonResult;
-import com.yango.springcloud.entities.Payment;
+import com.lgq.springcloud.entities.CommonResult;
+import com.lgq.springcloud.entities.Payment;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -1545,9 +1544,9 @@ public interface PaymentFeignService {
 创建controller实现调用
 
 ```java
-import com.yango.springcloud.entities.CommonResult;
-import com.yango.springcloud.entities.Payment;
-import com.yango.springcloud.service.PaymentFeignService;
+import com.lgq.springcloud.entities.CommonResult;
+import com.lgq.springcloud.entities.Payment;
+import com.lgq.springcloud.service.PaymentFeignService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -1663,7 +1662,7 @@ public class FeignConfig {
 logging:
   level:
     #feign日志以什么级别监控哪个接口
-    com.yango.springcloud.service.PaymentFeignService: debug
+    com.lgq.springcloud.service.PaymentFeignService: debug
 ```
 
 然后重新请求 http://localhost/consumer/payment/get/1 地址，查看控制台，可以看到已经打印了请求的详细信息
@@ -1742,7 +1741,7 @@ eureka:
         <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
     </dependency>
     <dependency>
-        <groupId>com.yango.springcloud</groupId>
+        <groupId>com.lgq.springcloud</groupId>
         <artifactId>cloud-api-commons</artifactId>
         <version>${project.version}</version>
     </dependency>
@@ -1810,7 +1809,7 @@ public class PaymentHytrixMain8001 {
 新建controller
 
 ```java
-import com.yango.springcloud.service.PaymentService;
+import com.lgq.springcloud.service.PaymentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -1851,7 +1850,7 @@ public interface PaymentService {
 ```
 
 ```java
-import com.yango.springcloud.service.PaymentService;
+import com.lgq.springcloud.service.PaymentService;
 import org.springframework.stereotype.Service;
 import java.util.concurrent.TimeUnit;
 @Service
@@ -1894,7 +1893,7 @@ hytrix在服务端和消费端都可以添加，但是一般是用在消费端
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>springcloud</artifactId>
-        <groupId>com.yango.springcloud</groupId>
+        <groupId>com.lgq.springcloud</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>    <dependencies>
@@ -1914,7 +1913,7 @@ hytrix在服务端和消费端都可以添加，但是一般是用在消费端
             <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.yango.springcloud</groupId>
+            <groupId>com.lgq.springcloud</groupId>
             <artifactId>cloud-api-commons</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -1995,7 +1994,7 @@ public interface PaymentHytrixService {
 新建controller
 
 ```java
-import com.yango.springcloud.service.PaymentHytrixService;
+import com.lgq.springcloud.service.PaymentHytrixService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -2040,7 +2039,7 @@ http://localhost/consumer/payment/hytrix/ok/1 正常访问，毫秒级响应，�
 ```java
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
-import com.yango.springcloud.service.PaymentService;
+import com.lgq.springcloud.service.PaymentService;
 import org.springframework.stereotype.Service;
 import java.util.concurrent.TimeUnit;
 @Service
@@ -2119,7 +2118,7 @@ public class OrderHytrixMain80 {
 ```java
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
-import com.yango.springcloud.service.PaymentHytrixService;
+import com.lgq.springcloud.service.PaymentHytrixService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -2170,7 +2169,7 @@ public class OrderHytrixController {
 import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
-import com.yango.springcloud.service.PaymentHytrixService;
+import com.lgq.springcloud.service.PaymentHytrixService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -2271,7 +2270,7 @@ public class PaymentFallbackService implements PaymentHytrixService{
 import cn.hutool.core.util.IdUtil;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
-import com.yango.springcloud.service.PaymentService;
+import com.lgq.springcloud.service.PaymentService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import java.util.concurrent.TimeUnit;
@@ -2333,7 +2332,7 @@ public class PaymentServiceImpl implements PaymentService {
 修改接口controller
 
 ```java
-import com.yango.springcloud.service.PaymentService;
+import com.lgq.springcloud.service.PaymentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -2422,7 +2421,7 @@ public class PaymentController {
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>springcloud</artifactId>
-        <groupId>com.yango.springcloud</groupId>
+        <groupId>com.lgq.springcloud</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -2606,7 +2605,7 @@ SpringCloud中所集成Zuul版本，采用Tomcat容器，使用的是传统的Se
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>springcloud</artifactId>
-        <groupId>com.yango.springcloud</groupId>
+        <groupId>com.lgq.springcloud</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -2633,7 +2632,7 @@ SpringCloud中所集成Zuul版本，采用Tomcat容器，使用的是传统的Se
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.yango.springcloud</groupId>
+            <groupId>com.lgq.springcloud</groupId>
             <artifactId>cloud-api-commons</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -2858,7 +2857,7 @@ SpringCloud Config为微服务架构中的微服务提供了集中化的外部�
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>springcloud</artifactId>
-        <groupId>com.yango.springcloud</groupId>
+        <groupId>com.lgq.springcloud</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -2956,7 +2955,7 @@ Spring Cloud会创建一个“Bootstrap Context”，作为Spring应用的“App
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>springcloud</artifactId>
-        <groupId>com.yango.springcloud</groupId>
+        <groupId>com.lgq.springcloud</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -3142,7 +3141,7 @@ public class ConfigClientController {
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>springcloud</artifactId>
-        <groupId>com.yango.springcloud</groupId>
+        <groupId>com.lgq.springcloud</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -3313,7 +3312,7 @@ Source和Sink：简单的可理解为参照对象时Spring Cloud Stream自身，
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>springcloud</artifactId>
-        <groupId>com.yango.springcloud</groupId>
+        <groupId>com.lgq.springcloud</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -3403,7 +3402,7 @@ public class StreamMQMain8801 {
 新建业务接口及service
 
 ```java
-import com.yango.springcloud.service.IMssageProvider;
+import com.lgq.springcloud.service.IMssageProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -3427,7 +3426,7 @@ public interface IMssageProvider {
 ```
 
 ```java
-import com.yango.springcloud.service.IMssageProvider;
+import com.lgq.springcloud.service.IMssageProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Source;
@@ -3463,7 +3462,7 @@ public class MessageProviderImpl implements IMssageProvider {
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>springcloud</artifactId>
-        <groupId>com.yango.springcloud</groupId>
+        <groupId>com.lgq.springcloud</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -3586,7 +3585,7 @@ public class ReceiveMessageListenerController {
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>springcloud</artifactId>
-        <groupId>com.yango.springcloud</groupId>
+        <groupId>com.lgq.springcloud</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -3926,7 +3925,7 @@ Apache Dubbo™ 是一款高性能 Java RPC 框架。
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>springcloud</artifactId>
-        <groupId>com.yango.springcloud</groupId>
+        <groupId>com.lgq.springcloud</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -4029,7 +4028,7 @@ cloudalibaba-provider-payment9002模块与上述一样，只是端口号不同�
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>springcloud</artifactId>
-        <groupId>com.yango.springcloud</groupId>
+        <groupId>com.lgq.springcloud</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -4040,7 +4039,7 @@ cloudalibaba-provider-payment9002模块与上述一样，只是端口号不同�
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.yango.springcloud</groupId>
+            <groupId>com.lgq.springcloud</groupId>
             <artifactId>cloud-api-commons</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -4168,7 +4167,7 @@ C是所有节点同一时间看到的数据是一致的，而A的定义是所有
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>springcloud</artifactId>
-        <groupId>com.yango.springcloud</groupId>
+        <groupId>com.lgq.springcloud</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -4466,7 +4465,7 @@ http {
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>springcloud</artifactId>
-        <groupId>com.yango.springcloud</groupId>
+        <groupId>com.lgq.springcloud</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>

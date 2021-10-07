@@ -1,9 +1,0 @@
-并发/并行
-秒杀--->所有人抢一个手机->并发
-多个售票员同时售票->并行
-JUC总共包含三个包
-java.util.concurrent
-java.util.concurrent.atomic
-java.util.concurrent.locks
-固定编程套路
-1.在高内聚低耦合的前提下，线程->操作->资源类

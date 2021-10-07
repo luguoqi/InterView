@@ -1,7 +1,4 @@
-package com.yango.distribute.lock;
-
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+package com.lgq.distribute.lock;
 
 /**
  * @Description TODO
