@@ -76,11 +76,50 @@ public synchronized boolean add(E e) {
 
 ![image-20210925231326438](https://gitee.com/lugq_zh/images/raw/master/img-dd/202109252313506.png)
 
+### Set集合并发问题
 
+```java
+public class CollectionThreadDemo {
+//  演示set集合并发问题
+    public static void main(String[] args) {
+        Set<String> set = new HashSet<>();
+//        解决：
+//        Set<String> set = Collections.synchronizedSet(new HashSet<>());
+//        Set<String> set = new CopyOnWriteArraySet<>();
+        for (int i = 0; i < 50; i++) {
+            new Thread(()->{
+                set.add(UUID.randomUUID().toString().substring(0,6));
+//                输出集合内容，可能会抛出java.util.ConcurrentModificationException
+                System.out.println(set);
+            }).start();
+        }
+    }
+}
+```
 
+HashSet底层就是用HashMap，都是线程不安全的集合
 
+### Map集合并发问题
 
-
+```java
+public class CollectionThreadDemo {
+//  演示map集合并发问题
+    public static void main(String[] args) {
+        Map<String, String> map = new HashMap<>();
+//		解决：
+//		Hashtable
+//		Collections.synchronizedSet(new HashMap<>())
+//		ConcurrentMap
+        for (int i = 0; i < 50; i++) {
+            new Thread(()->{
+                map.put(UUID.randomUUID().toString().substring(0,6), "test");
+//                输出集合内容，可能会抛出java.util.ConcurrentModificationException
+                System.out.println(map);
+            }).start();
+        }
+    }
+}
+```
 
 
 
